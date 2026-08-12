@@ -1,0 +1,127 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".PlayerActivity" >
+
+    <RelativeLayout
+        android:id="@+id/plr_prv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" >
+
+        <RelativeLayout
+            android:id="@+id/plr_hair"
+            android:layout_width="40dp"
+            android:layout_height="32dp"
+            android:layout_centerHorizontal="true" >
+
+            <RelativeLayout
+                android:id="@+id/plr_skin"
+                android:layout_width="32dp"
+                android:layout_height="24dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" >
+
+                <View
+                    android:id="@+id/plr_leye"
+                    android:layout_width="8dp"
+                    android:layout_height="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="4dp" />
+
+                <View
+                    android:id="@+id/plr_reye"
+                    android:layout_width="8dp"
+                    android:layout_height="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="4dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/plr_shirt"
+            android:layout_width="64dp"
+            android:layout_height="72dp"
+            android:layout_below="@id/plr_hair" >
+
+            <View
+                android:id="@+id/plr_ushirt"
+                android:layout_width="58dp"
+                android:layout_height="68dp"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/plr_pants"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/plr_shirt"
+            android:layout_centerHorizontal="true" />
+
+        <View
+            android:id="@+id/plr_shoe"
+            android:layout_width="40dp"
+            android:layout_height="16dp"
+            android:layout_alignBottom="@id/plr_pants"
+            android:layout_centerHorizontal="true" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_alignBottom="@id/plr_shoe"
+            android:layout_alignTop="@id/plr_pants"
+            android:layout_centerHorizontal="true"
+            android:background="#222" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/path"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="@null"
+        android:gravity="center_vertical|left"
+        android:hint="/path/to/player.plr"
+        android:imeOptions="actionGo"
+        android:padding="2dp"
+        android:singleLine="true"
+        android:textColor="#ccc"
+        android:textColorHint="#888"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/parse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:backgroundTint="@color/fore"
+        android:text="Parse" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollIndicators="top"
+        android:scrollbarFadeDuration="2"
+        android:scrollbarSize="1dp"
+        android:scrollbarStyle="insideInset"
+        android:scrollbarThumbVertical="@color/text" >
+
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="true" />
+    </ScrollView>
+
+</LinearLayout>
