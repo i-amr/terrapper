@@ -1,6 +1,10 @@
 package com.amr.terra.model.player;
 
+import com.amr.terra.common.player.data.DisplayDevice;
+import com.amr.terra.data.Buff;
 import com.amr.terra.data.Item;
+import com.amr.terra.data.Point;
+import com.amr.terra.data.Spawn;
 import com.amr.terra.enums.FileType;
 import com.amr.terra.exception.MetadataError;
 import com.amr.terra.exception.UnsupportedVersionError;
@@ -190,33 +194,36 @@ public class PlayerIO {
         player.setVoidVaultItem(i, item);
       }
 
-      // player.voidVaultInfo = (BitsByte) br.readUByte();
+      // i have no idea what could it be
+      player.setVoidVaultInfo(br.readUByte());
 
-      // int num = 44;
-      // for (int i = 0; i < num; i++) {
-      // player.buffType[i] = br.readInt32();
-      // player.buffTime[i] = br.readInt32();
+      for (int i = 0; i < 44; i++) { // buffCount = 44
+        final Buff buff = new Buff();
 
-      // if (player.buffType[i] == 0) {
-      // i--; num--;
-      // }
-      // }
+        buff.setId(br.readInt32());
+        buff.setDuration(br.readInt32());
 
-      // for (int i = 0; i < 200; i++) {
-      // int num = br.readInt32();
-      // if (num != -1) {
-      // player.spX[i] = num;
-      // player.spY[i] = br.readInt32();
-      // player.spI[i] = br.readInt32();
-      // player.spN[i] = br.readString();
-      // }
-      // else break;
-      // }
+        player.setBuff(i, buff);
+      }
 
-      // player.hbLocked = br.readBoolean();
+      for (int i = 0; i < 200; i++) {
+        final int x = br.readInt32(); if (x == -1) break;
+        final int y = br.readInt32();
+        final Point point = new Point(x, y);
 
-      // for (int i = 0; i < 13; i++)
-      // player.hideInfo[i] = br.readBoolean();
+        final Spawn spawn = new Spawn();
+        spawn.setPoint(point);
+        spawn.setId(br.readInt32());
+        spawn.setName(br.readString());
+
+        player.setSpawn(i, spawn);
+      }
+
+      player.setHotbarLocked(br.readBoolean());
+
+      final DisplayDevice device = new DisplayDevice();
+      for (int i = 0; i < 13; i++) device.setEnabled(i, !br.readBoolean());
+      player.setDisplayDevice(device);
 
       // player.anglerQuestsFinished = br.readInt32();
 

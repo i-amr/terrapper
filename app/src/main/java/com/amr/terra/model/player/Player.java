@@ -1,14 +1,16 @@
 package com.amr.terra.model.player;
 
+import com.amr.terra.common.player.data.DisplayDevice;
+import com.amr.terra.data.Buff;
 import com.amr.terra.data.Color;
 import com.amr.terra.data.Item;
+import com.amr.terra.data.Spawn;
 import com.amr.terra.enums.Difficulty;
 import com.amr.terra.enums.TeamId;
 import com.amr.terra.metadata.Metadata;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
-// import java.util.Objects;
 
 public class Player {
 
@@ -18,13 +20,13 @@ public class Player {
   private Difficulty difficulty;
   private Duration playTime;
   private TeamId team;
-  private int hairStyle, hairDye;
-  private int skinVariant;
+  private int hairStyle, hairDye, skinVariant;
   private int health, mana, healthMax, manaMax;
   private boolean usedDemonHeart, usedTochGodFavor, usedArtisanBread, usedVitalCrystal, usedAegisFruit, usedArcaneCrystal, usedGalaxyPearl, usedGummyWorm, usedAmbrosia;
-  private boolean enabledTochGodFavor, defeatedDD2Invasion;
-  private int taxMoney, deathsPvE, deathsPvP;
+  private boolean enabledTochGodFavor, defeatedDD2Invasion, hotbarLocked;
+  private int taxMoney, deathsPvE, deathsPvP, voidVaultInfo;
   private Color hairColor, skinColor, eyeColor, shirtColor, underShirtColor, pantsColor, shoeColor;
+  private DisplayDevice displayDevice;
 
   private boolean[] hideAccessory = new boolean[10];
   private boolean[] hideMisc      = new boolean[8];
@@ -37,6 +39,8 @@ public class Player {
   private Item[] safe             = new Item[40];
   private Item[] defenderForge    = new Item[40];
   private Item[] voidVault        = new Item[40];
+  private Buff[] buffs            = new Buff[44];
+  private Spawn[] spawns          = new Spawn[200];
 
   protected Player() { }
 
@@ -85,7 +89,12 @@ public class Player {
     Item[] piggyBank,
     Item[] safe,
     Item[] defenderForge,
-    Item[] voidVault
+    Item[] voidVault,
+    int voidVaultInfo,
+    Buff[] buffs,
+    Spawn[] spawns,
+    boolean hotbarLocked,
+    DisplayDevice displayDevice
   ) {
     this.version             = version;
     this.meta                = meta;
@@ -132,6 +141,11 @@ public class Player {
     this.safe                = safe;
     this.defenderForge       = defenderForge;
     this.voidVault           = voidVault;
+    this.voidVaultInfo       = voidVaultInfo;
+    this.buffs               = buffs;
+    this.spawns              = spawns;
+    this.hotbarLocked        = hotbarLocked;
+    this.displayDevice       = displayDevice;
   }
 
   public int getVersion()                                       { return version; }
@@ -226,71 +240,88 @@ public class Player {
   public boolean isDefeatedDD2Invasion()                        { return defeatedDD2Invasion; }
   public void setDefeatedDD2Invasion(boolean defeated)          { this.defeatedDD2Invasion = defeated; }
 
-  public int getTaxMoney() { return taxMoney; }
-  public void setTaxMoney(int taxMoney) { this.taxMoney = taxMoney; }
+  public int getTaxMoney()                                      { return taxMoney; }
+  public void setTaxMoney(int taxMoney)                         { this.taxMoney = taxMoney; }
 
-  public int getNumberOfDeathsPvE() { return deathsPvE; }
-  public void setNumberOfDeathsPvE(int deathsPvE) { this.deathsPvE = deathsPvE; }
+  public int getNumberOfDeathsPvE()                             { return deathsPvE; }
+  public void setNumberOfDeathsPvE(int deathsPvE)               { this.deathsPvE = deathsPvE; }
 
-  public int getNumberOfDeathsPvP() { return deathsPvP; }
-  public void setNumberOfDeathsPvP(int deathsPvP) { this.deathsPvP = deathsPvP; }
+  public int getNumberOfDeathsPvP()                             { return deathsPvP; }
+  public void setNumberOfDeathsPvP(int deathsPvP)               { this.deathsPvP = deathsPvP; }
 
-  public Color getHairColor() { return hairColor; }
-  public void setHairColor(Color hairColor) { this.hairColor = hairColor; }
+  public Color getHairColor()                                   { return hairColor; }
+  public void setHairColor(Color hairColor)                     { this.hairColor = hairColor; }
 
-  public Color getSkinColor() { return skinColor; }
-  public void setSkinColor(Color skinColor) { this.skinColor = skinColor; }
+  public Color getSkinColor()                                   { return skinColor; }
+  public void setSkinColor(Color skinColor)                     { this.skinColor = skinColor; }
 
-  public Color getEyeColor() { return eyeColor; }
-  public void setEyeColor(Color eyeColor) { this.eyeColor = eyeColor; }
+  public Color getEyeColor()                                    { return eyeColor; }
+  public void setEyeColor(Color eyeColor)                       { this.eyeColor = eyeColor; }
 
-  public Color getShirtColor() { return shirtColor; }
-  public void setShirtColor(Color shirtColor) { this.shirtColor = shirtColor; }
+  public Color getShirtColor()                                  { return shirtColor; }
+  public void setShirtColor(Color shirtColor)                   { this.shirtColor = shirtColor; }
 
-  public Color getUnderShirtColor() { return underShirtColor; }
-  public void setUnderShirtColor(Color underShirtColor) { this.underShirtColor = underShirtColor; }
+  public Color getUnderShirtColor()                             { return underShirtColor; }
+  public void setUnderShirtColor(Color underShirtColor)         { this.underShirtColor = underShirtColor; }
 
-  public Color getPantsColor() { return pantsColor; }
-  public void setPantsColor(Color pantsColor) { this.pantsColor = pantsColor; }
+  public Color getPantsColor()                                  { return pantsColor; }
+  public void setPantsColor(Color pantsColor)                   { this.pantsColor = pantsColor; }
 
-  public Color getShoeColor() { return shoeColor; }
-  public void setShoeColor(Color shoeColor) { this.shoeColor = shoeColor; }
+  public Color getShoeColor()                                   { return shoeColor; }
+  public void setShoeColor(Color shoeColor)                     { this.shoeColor = shoeColor; }
 
-  public Item[] getEquipments() { return equipments; }
-  public Item getEquipment(int slot) { return slot >= equipments.length ? null : equipments[slot]; }
-  public void setEquipment(int slot, Item equipment) { if (slot >= 0 && slot < equipments.length) equipments[slot] = equipment; }
+  public Item[] getEquipments()                                 { return equipments; }
+  public Item getEquipment(int slot)                            { return slot >= equipments.length ? null : equipments[slot]; }
+  public void setEquipment(int slot, Item equipment)            { if (slot >= 0 && slot < equipments.length) equipments[slot] = equipment; }
 
-  public Item[] getDyes() { return dyes; }
-  public Item getDye(int slot) { return slot >= dyes.length ? null : dyes[slot]; }
-  public void setDye(int slot, Item dye) { if (slot >= 0 && slot < dyes.length) dyes[slot] = dye; }
+  public Item[] getDyes()                                       { return dyes; }
+  public Item getDye(int slot)                                  { return slot >= dyes.length ? null : dyes[slot]; }
+  public void setDye(int slot, Item dye)                        { if (slot >= 0 && slot < dyes.length) dyes[slot] = dye; }
 
-  public Item[] getInventory() { return inventory; }
-  public Item getInventoryItem(int slot) { return slot >= inventory.length ? null : inventory[slot]; }
-  public void setInventoryItem(int slot, Item item) { if (slot >= 0 && slot < inventory.length) inventory[slot] = item; }
+  public Item[] getInventory()                                  { return inventory; }
+  public Item getInventoryItem(int slot)                        { return slot >= inventory.length ? null : inventory[slot]; }
+  public void setInventoryItem(int slot, Item item)             { if (slot >= 0 && slot < inventory.length) inventory[slot] = item; }
 
-  public Item[] getMiscEquipments() { return miscEquipments; }
-  public Item getMiscEquipment(int slot) { return slot >= miscEquipments.length ? null : miscEquipments[slot]; }
-  public void setMiscEquipment(int slot, Item equipment) { if (slot >= 0 && slot < miscEquipments.length) miscEquipments[slot] = equipment; }
+  public Item[] getMiscEquipments()                             { return miscEquipments; }
+  public Item getMiscEquipment(int slot)                        { return slot >= miscEquipments.length ? null : miscEquipments[slot]; }
+  public void setMiscEquipment(int slot, Item equipment)        { if (slot >= 0 && slot < miscEquipments.length) miscEquipments[slot] = equipment; }
 
-  public Item[] getMiscDyes() { return miscDyes; }
-  public Item getMiscDye(int slot) { return slot >= miscDyes.length ? null : miscDyes[slot]; }
-  public void setMiscDye(int slot, Item dye) { if (slot >= 0 && slot < miscDyes.length) miscDyes[slot] = dye; }
+  public Item[] getMiscDyes()                                   { return miscDyes; }
+  public Item getMiscDye(int slot)                              { return slot >= miscDyes.length ? null : miscDyes[slot]; }
+  public void setMiscDye(int slot, Item dye)                    { if (slot >= 0 && slot < miscDyes.length) miscDyes[slot] = dye; }
 
-  public Item[] getPiggyBank() { return piggyBank; }
-  public Item getPiggyBankItem(int slot) { return slot >= piggyBank.length ? null : piggyBank[slot]; }
-  public void setPiggyBankItem(int slot, Item item) { if (slot >= 0 && slot < piggyBank.length) piggyBank[slot] = item; }
+  public Item[] getPiggyBank()                                  { return piggyBank; }
+  public Item getPiggyBankItem(int slot)                        { return slot >= piggyBank.length ? null : piggyBank[slot]; }
+  public void setPiggyBankItem(int slot, Item item)             { if (slot >= 0 && slot < piggyBank.length) piggyBank[slot] = item; }
 
-  public Item[] getSafe() { return safe; }
-  public Item getSafeItem(int slot) { return slot >= safe.length ? null : safe[slot]; }
-  public void setSafeItem(int slot, Item item) { if (slot >= 0 && slot < safe.length) safe[slot] = item; }
+  public Item[] getSafe()                                       { return safe; }
+  public Item getSafeItem(int slot)                             { return slot >= safe.length ? null : safe[slot]; }
+  public void setSafeItem(int slot, Item item)                  { if (slot >= 0 && slot < safe.length) safe[slot] = item; }
 
-  public Item[] getDefenderForge() { return defenderForge; }
-  public Item getDefenderForgeItem(int slot) { return slot >= defenderForge.length ? null : defenderForge[slot]; }
-  public void setDefenderForgeItem(int slot, Item item) { if (slot >= 0 && slot < defenderForge.length) defenderForge[slot] = item; }
+  public Item[] getDefenderForge()                              { return defenderForge; }
+  public Item getDefenderForgeItem(int slot)                    { return slot >= defenderForge.length ? null : defenderForge[slot]; }
+  public void setDefenderForgeItem(int slot, Item item)         { if (slot >= 0 && slot < defenderForge.length) defenderForge[slot] = item; }
 
-  public Item[] getVoidVault() { return voidVault; }
-  public Item getVoidVaultItem(int slot) { return slot >= voidVault.length ? null : voidVault[slot]; }
-  public void setVoidVaultItem(int slot, Item item) { if (slot >= 0 && slot < voidVault.length) voidVault[slot] = item; }
+  public Item[] getVoidVault()                                  { return voidVault; }
+  public Item getVoidVaultItem(int slot)                        { return slot >= voidVault.length ? null : voidVault[slot]; }
+  public void setVoidVaultItem(int slot, Item item)             { if (slot >= 0 && slot < voidVault.length) voidVault[slot] = item; }
+
+  public int getVoidVaultInfo()                                 { return voidVaultInfo; }
+  public void setVoidVaultInfo(int voidVaultInfo)               { this.voidVaultInfo = voidVaultInfo; }
+
+  public Buff[] getBuffs()                                      { return buffs; }
+  public Buff getBuff(int idx)                                  { return idx >= buffs.length ? null : buffs[idx]; }
+  public void setBuff(int idx, Buff buff)                       { if (idx >= 0 && idx < buffs.length) buffs[idx] = buff; }
+
+  public Spawn[] getSpawns()                                    { return spawns; }
+  public Spawn getSpawn(int idx)                                { return idx >= spawns.length ? null : spawns[idx]; }
+  public void setSpawn(int idx, Spawn spawn)                    { if (idx >= 0 && idx < spawns.length) spawns[idx] = spawn; }
+
+  public boolean isHotbarLocked()                               { return hotbarLocked; }
+  public void setHotbarLocked(boolean locked)                   { this.hotbarLocked = locked; }
+
+  public DisplayDevice getDisplayDevice()                       { return displayDevice; }
+  public void setDisplayDevice(DisplayDevice displayDevice)     { this.displayDevice = displayDevice; }
 
   @Override
   public boolean equals(Object o) {
@@ -373,6 +404,11 @@ public class Player {
         ", safe="           + Arrays.toString(safe) +
         ", defenderForge="  + Arrays.toString(defenderForge) +
         ", voidVault="      + Arrays.toString(voidVault) +
+        ", voidVaultInfo="  + voidVaultInfo +
+        ", buffs="          + Arrays.toString(buffs) +
+        ", spawns="         + Arrays.toString(spawns) +
+        ", hotbarLocked="   + hotbarLocked +
+        ", DisplayDevice="  + displayDevice +
         ')';
   }
 }
