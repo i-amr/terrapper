@@ -9,22 +9,11 @@ public enum DisplayDeviceId {
   CREATURE_COUNT,
   KILL_COUNT,
   MOON_PHASE,
+  UNDEFINED,
   MOVEMENT_SPEED,
   TREASURE,
   RARE_CREATURES,
   DAMAGE_PER_SECOND;
-  // MOVEMENT_SPEED,
-  // POSITION,
-  // DEPTH,
-  // CREATURE_COUNT,
-  // KILL_COUNT,
-  // DAMAGE_PER_SECOND,
-  // FISHING,
-  // TREASURE,
-  // RARE_CREATURES,
-  // TIME,
-  // WEATHER,
-  // MOON_PHASE;
 
   public int value() { return ordinal(); }
   public static int length() { return values().length; }

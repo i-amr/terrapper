@@ -28,18 +28,19 @@ public class DisplayDevice {
   @Override
   public String toString() {
     return "DisplayDevice("  +
-        "time="              + displayDevice[DisplayDeviceId.TIME.value()] +
-        ", weather="         + displayDevice[DisplayDeviceId.WEATHER.value()] +
-        ", fishing="         + displayDevice[DisplayDeviceId.FISHING.value()] +
-        ", position="        + displayDevice[DisplayDeviceId.POSITION.value()] +
-        ", depth="           + displayDevice[DisplayDeviceId.DEPTH.value()] +
-        ", creatureCount="   + displayDevice[DisplayDeviceId.CREATURE_COUNT.value()] +
-        ", killCount="       + displayDevice[DisplayDeviceId.KILL_COUNT.value()] +
-        ", moonPhase="       + displayDevice[DisplayDeviceId.MOON_PHASE.value()] +
-        ", movementSpeed="   + displayDevice[DisplayDeviceId.MOVEMENT_SPEED.value()] +
-        ", treasure="        + displayDevice[DisplayDeviceId.TREASURE.value()] +
-        ", rareCreatures="   + displayDevice[DisplayDeviceId.RARE_CREATURES.value()] +
-        ", damagePerSecond=" + displayDevice[DisplayDeviceId.DAMAGE_PER_SECOND.value()] +
+        "movementSpeed="     + isEnabled(DisplayDeviceId.MOVEMENT_SPEED) +
+        ", position="        + isEnabled(DisplayDeviceId.POSITION) +
+        ", depth="           + isEnabled(DisplayDeviceId.DEPTH) +
+        ", creatureCount="   + isEnabled(DisplayDeviceId.CREATURE_COUNT) +
+        ", killCount="       + isEnabled(DisplayDeviceId.KILL_COUNT) +
+        ", damagePerSecond=" + isEnabled(DisplayDeviceId.DAMAGE_PER_SECOND) +
+        ", fishing="         + isEnabled(DisplayDeviceId.FISHING) +
+        ", treasure="        + isEnabled(DisplayDeviceId.TREASURE) +
+        ", rareCreatures="   + isEnabled(DisplayDeviceId.RARE_CREATURES) +
+        ", time="            + isEnabled(DisplayDeviceId.TIME) +
+        ", weather="         + isEnabled(DisplayDeviceId.WEATHER) +
+        ", moonPhase="       + isEnabled(DisplayDeviceId.MOON_PHASE) +
+        // ", undefined="       + isEnabled(DisplayDeviceId.UNDEFINED) +
         ')';
   }
 }

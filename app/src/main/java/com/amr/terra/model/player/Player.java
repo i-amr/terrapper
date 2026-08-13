@@ -1,6 +1,7 @@
 package com.amr.terra.model.player;
 
 import com.amr.terra.common.player.data.DisplayDevice;
+import com.amr.terra.common.player.enums.BuilderAccessoriesId;
 import com.amr.terra.data.Buff;
 import com.amr.terra.data.Color;
 import com.amr.terra.data.Item;
@@ -8,7 +9,9 @@ import com.amr.terra.data.Spawn;
 import com.amr.terra.enums.Difficulty;
 import com.amr.terra.enums.TeamId;
 import com.amr.terra.metadata.Metadata;
+import com.amr.terra.util.DateTime;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -23,24 +26,27 @@ public class Player {
   private int hairStyle, hairDye, skinVariant;
   private int health, mana, healthMax, manaMax;
   private boolean usedDemonHeart, usedTochGodFavor, usedArtisanBread, usedVitalCrystal, usedAegisFruit, usedArcaneCrystal, usedGalaxyPearl, usedGummyWorm, usedAmbrosia;
-  private boolean enabledTochGodFavor, defeatedDD2Invasion, hotbarLocked;
+  private boolean enabledTochGodFavor, defeatedDD2Invasion, hotbarLocked, dead;
   private int taxMoney, deathsPvE, deathsPvP, voidVaultInfo;
+  private int anglerQuests, bartenderQuest, respawnTimer, golfScore;
+  private LocalDateTime lastModifiedTime;
   private Color hairColor, skinColor, eyeColor, shirtColor, underShirtColor, pantsColor, shoeColor;
   private DisplayDevice displayDevice;
 
-  private boolean[] hideAccessory = new boolean[10];
-  private boolean[] hideMisc      = new boolean[8];
-  private Item[] equipments       = new Item[20];
-  private Item[] dyes             = new Item[10];
-  private Item[] inventory        = new Item[58]; // 50 item - 4 coins - 4 ammo
-  private Item[] miscEquipments   = new Item[5]; // pet, light, mount, minecart, hook
-  private Item[] miscDyes         = new Item[5];
-  private Item[] piggyBank        = new Item[40];
-  private Item[] safe             = new Item[40];
-  private Item[] defenderForge    = new Item[40];
-  private Item[] voidVault        = new Item[40];
-  private Buff[] buffs            = new Buff[44];
-  private Spawn[] spawns          = new Spawn[200];
+  private boolean[] hideAccessory  = new boolean[10];
+  private boolean[] hideMisc       = new boolean[8];
+  private Item[] equipments        = new Item[20];
+  private Item[] dyes              = new Item[10];
+  private Item[] inventory         = new Item[58]; // 50 item - 4 coins - 4 ammo
+  private Item[] miscEquipments    = new Item[5]; // pet, light, mount, minecart, hook
+  private Item[] miscDyes          = new Item[5];
+  private Item[] piggyBank         = new Item[40];
+  private Item[] safe              = new Item[40];
+  private Item[] defenderForge     = new Item[40];
+  private Item[] voidVault         = new Item[40];
+  private Buff[] buffs             = new Buff[44];
+  private Spawn[] spawns           = new Spawn[200];
+  private int[] builderAccessories = new int[BuilderAccessoriesId.length()];
 
   protected Player() { }
 
@@ -94,58 +100,70 @@ public class Player {
     Buff[] buffs,
     Spawn[] spawns,
     boolean hotbarLocked,
-    DisplayDevice displayDevice
+    DisplayDevice displayDevice,
+    int anglerQuests,
+    int[] builderAccessories,
+    int bartenderQuest,
+    boolean dead,
+    int respawnTimer,
+    LocalDateTime lastModifiedTime
   ) {
-    this.version             = version;
-    this.meta                = meta;
-    this.name                = name;
-    this.difficulty          = difficulty;
-    this.playTime            = playTime;
-    this.hairStyle           = hairStyle;
-    this.hairDye             = hairDye;
-    this.team                = team;
-    this.hideAccessory       = hideAccessory;
-    this.hideMisc            = hideMisc;
-    this.skinVariant         = skinVariant;
-    this.health              = health;
-    this.healthMax           = healthMax;
-    this.mana                = mana;
-    this.manaMax             = manaMax;
-    this.usedDemonHeart      = usedDemonHeart;
-    this.usedTochGodFavor    = usedTochGodFavor;
-    this.usedArtisanBread    = usedArtisanBread;
-    this.usedVitalCrystal    = usedVitalCrystal;
-    this.usedAegisFruit      = usedAegisFruit;
-    this.usedArcaneCrystal   = usedArcaneCrystal;
-    this.usedGalaxyPearl     = usedGalaxyPearl;
-    this.usedGummyWorm       = usedGummyWorm;
-    this.usedAmbrosia        = usedAmbrosia;
-    this.enabledTochGodFavor = enabledTochGodFavor;
-    this.defeatedDD2Invasion = defeatedDD2Invasion;
-    this.taxMoney            = taxMoney;
-    this.deathsPvE           = deathsPvE;
-    this.deathsPvP           = deathsPvP;
-    this.hairColor           = hairColor;
-    this.skinColor           = skinColor;
-    this.eyeColor            = eyeColor;
-    this.shirtColor          = shirtColor;
-    this.underShirtColor     = underShirtColor;
-    this.pantsColor          = pantsColor;
-    this.shoeColor           = shoeColor;
-    this.equipments          = equipments;
-    this.dyes                = dyes;
-    this.inventory           = inventory;
-    this.miscEquipments      = miscEquipments;
-    this.miscDyes            = miscDyes;
-    this.piggyBank           = piggyBank;
-    this.safe                = safe;
-    this.defenderForge       = defenderForge;
-    this.voidVault           = voidVault;
-    this.voidVaultInfo       = voidVaultInfo;
-    this.buffs               = buffs;
-    this.spawns              = spawns;
-    this.hotbarLocked        = hotbarLocked;
-    this.displayDevice       = displayDevice;
+    this.version              = version;
+    this.meta                 = meta;
+    this.name                 = name;
+    this.difficulty           = difficulty;
+    this.playTime             = playTime;
+    this.hairStyle            = hairStyle;
+    this.hairDye              = hairDye;
+    this.team                 = team;
+    this.hideAccessory        = hideAccessory;
+    this.hideMisc             = hideMisc;
+    this.skinVariant          = skinVariant;
+    this.health               = health;
+    this.healthMax            = healthMax;
+    this.mana                 = mana;
+    this.manaMax              = manaMax;
+    this.usedDemonHeart       = usedDemonHeart;
+    this.usedTochGodFavor     = usedTochGodFavor;
+    this.usedArtisanBread     = usedArtisanBread;
+    this.usedVitalCrystal     = usedVitalCrystal;
+    this.usedAegisFruit       = usedAegisFruit;
+    this.usedArcaneCrystal    = usedArcaneCrystal;
+    this.usedGalaxyPearl      = usedGalaxyPearl;
+    this.usedGummyWorm        = usedGummyWorm;
+    this.usedAmbrosia         = usedAmbrosia;
+    this.enabledTochGodFavor  = enabledTochGodFavor;
+    this.defeatedDD2Invasion  = defeatedDD2Invasion;
+    this.taxMoney             = taxMoney;
+    this.deathsPvE            = deathsPvE;
+    this.deathsPvP            = deathsPvP;
+    this.hairColor            = hairColor;
+    this.skinColor            = skinColor;
+    this.eyeColor             = eyeColor;
+    this.shirtColor           = shirtColor;
+    this.underShirtColor      = underShirtColor;
+    this.pantsColor           = pantsColor;
+    this.shoeColor            = shoeColor;
+    this.equipments           = equipments;
+    this.dyes                 = dyes;
+    this.inventory            = inventory;
+    this.miscEquipments       = miscEquipments;
+    this.miscDyes             = miscDyes;
+    this.piggyBank            = piggyBank;
+    this.safe                 = safe;
+    this.defenderForge        = defenderForge;
+    this.voidVault            = voidVault;
+    this.voidVaultInfo        = voidVaultInfo;
+    this.buffs                = buffs;
+    this.spawns               = spawns;
+    this.hotbarLocked         = hotbarLocked;
+    this.displayDevice        = displayDevice;
+    this.anglerQuests         = anglerQuests;
+    this.builderAccessories   = builderAccessories;
+    this.bartenderQuest       = bartenderQuest;
+    this.dead                 = dead;
+    this.respawnTimer         = respawnTimer;
+    this.lastModifiedTime     = lastModifiedTime;
   }
 
   public int getVersion()                                       { return version; }
@@ -323,6 +341,32 @@ public class Player {
   public DisplayDevice getDisplayDevice()                       { return displayDevice; }
   public void setDisplayDevice(DisplayDevice displayDevice)     { this.displayDevice = displayDevice; }
 
+  public int getAnglerQuestsFinished()                          { return anglerQuests; }
+  public void setAnglerQuestsFinished(int quests)               { this.anglerQuests = quests; }
+
+  // skipping DPad Radial Bindings for now
+
+  public int[] setBuilderAccessories()                          { return builderAccessories; }
+  public int getBuilderAccessory(int slot)                      { return slot >= builderAccessories.length ? -1 : builderAccessories[slot]; }
+  public void setBuilderAccessory(int slot, int itemId)         { if (slot >= 0 && slot < builderAccessories.length) builderAccessories[slot] = itemId; }
+
+
+  public int getBartenderQuestLog()                             { return bartenderQuest; }
+  public void setBartenderQuestLog(int questLog)                { this.bartenderQuest = questLog; }
+
+  public boolean isDead()                                       { return dead; }
+  public void setDead(boolean dead)                             { this.dead = dead; }
+
+  public int getRespawnTimer()                                  { return dead ? respawnTimer : 0; }
+  public void setRespawnTimer(int respawnTimer)                 { this.respawnTimer = respawnTimer; }
+
+  public LocalDateTime getLastModifiedTime()                    { return lastModifiedTime; }
+  public void setLastModifiedTime(LocalDateTime lastModified)   { this.lastModifiedTime = lastModified; }
+  public void setLastModifiedTime(long lastModified)            { this.lastModifiedTime = DateTime.fromBinary(lastModified); }
+
+  public int getGolferScoreAccumulated()                        { return golfScore; }
+  public void setGolferScoreAccumulated(int score)              { this.golfScore = score; }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -361,7 +405,7 @@ public class Player {
 
   @Override
   public String toString() {
-    return "Player("         +
+    return "Player("        +
         "version="          + version +
         ", metadata="       + meta +
         ", name="           + name +
@@ -387,7 +431,7 @@ public class Player {
         ", ambrosia="       + usedAmbrosia +
         ", oldOneArmy="     + defeatedDD2Invasion + // seems to be incorrect
         ", taxMoney="       + taxMoney +
-        ", deaths=("        + "PvE=" + deathsPvE + ", PvP="  + deathsPvP + ")" +
+        ", deaths=("        + "PvE=" + deathsPvE + ", PvP=" + deathsPvP + ')' +
         ", hair="           + hairColor +
         ", skin="           + skinColor +
         ", eye="            + eyeColor +
@@ -408,7 +452,14 @@ public class Player {
         ", buffs="          + Arrays.toString(buffs) +
         ", spawns="         + Arrays.toString(spawns) +
         ", hotbarLocked="   + hotbarLocked +
-        ", DisplayDevice="  + displayDevice +
+        ", displayDevice="  + displayDevice +
+        ", anglerQuests="   + anglerQuests +
+        ", builderTools="   + Arrays.toString(builderAccessories) +
+        ", bartenderQuest=" + bartenderQuest +
+        ", dead="           + isDead() +
+        ", respawnTimer="   + getRespawnTimer() +
+        ", lastSave="       + lastModifiedTime +
+        ", golfScore="      + golfScore +
         ')';
   }
 }

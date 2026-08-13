@@ -1,6 +1,8 @@
 package com.amr.terra.model.player;
 
 import com.amr.terra.common.player.data.DisplayDevice;
+import com.amr.terra.common.player.enums.BuilderAccessoriesId;
+import com.amr.terra.common.player.enums.DisplayDeviceId;
 import com.amr.terra.data.Buff;
 import com.amr.terra.data.Item;
 import com.amr.terra.data.Point;
@@ -221,26 +223,27 @@ public class PlayerIO {
 
       player.setHotbarLocked(br.readBoolean());
 
-      final DisplayDevice device = new DisplayDevice();
-      for (int i = 0; i < 13; i++) device.setEnabled(i, !br.readBoolean());
-      player.setDisplayDevice(device);
+      final DisplayDevice displayDevice = new DisplayDevice();
+      for (DisplayDeviceId device : DisplayDeviceId.values())
+        displayDevice.setEnabled(device, !br.readBoolean());
+      player.setDisplayDevice(displayDevice);
 
-      // player.anglerQuestsFinished = br.readInt32();
+      player.setAnglerQuestsFinished(br.readInt32());
 
-      // for (int i = 0; i < 4; i++)
-      // player.DpadRadial.Bindings[i] = br.readInt32();
+      for (int i = 0; i < 4; i++) // absolutely no idea
+        br.readInt32();
 
-      // for (int i = 0; i < 12; i++)
-      // player.builderAccStatus[i] = br.readInt32();
+      for (int i = 0; i < BuilderAccessoriesId.length(); i++) // toolbox
+        player.setBuilderAccessory(i, br.readInt32());
 
-      // player.bartenderQuestLog = br.readInt32();
+      player.setBartenderQuestLog(br.readInt32());
 
-      // player.dead = br.readBoolean();
-      // if (player.dead)
-      // player.respawnTimer = Utils.Clamp<int>(br.readInt32(), 0, 60000);
+      player.setDead(br.readBoolean());
+      if (player.isDead())
+        player.setRespawnTimer(Math.min(Math.max(br.readInt32(), 0), 60000));
 
-      // player.lastTimePlayerWasSaved = br.readInt64();
-      // player.golferScoreAccumulated = br.readInt32();
+      player.setLastModifiedTime(br.readInt64());
+      player.setGolferScoreAccumulated(br.readInt32());
       // player.creativeTracker.Load(br, version);
       // player.LoadTemporaryItemSlotContents(br);
       // player.savedPerPlayerFieldsThatArentInThePlayerClass = new
