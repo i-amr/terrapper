@@ -1,2 +1,2 @@
 # terrapper
-a terraria client written in java for android
+**WIP**: a terraria parser with simple UI written in java for android
